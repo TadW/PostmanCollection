@@ -1,10 +1,47 @@
 {
 	"info": {
-		"_postman_id": "a7ef3eb1-e08c-4c4f-9bf9-2ee38d96b215",
-		"name": "REST API for Testing",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"_postman_id": "32ffa1a7-0d3e-4d5e-b406-89fea1d23fcb",
+		"name": "REST API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18783976"
 	},
 	"item": [
+		{
+			"name": "API Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\",  () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Response time is less than 1000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body title matches\",() => {\r",
+							"  pm.expect(pm.response.text()).to.include(\"GraphQL and REST API for Testing and Prototyping | GO REST\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{APIStatusURL}}",
+					"host": [
+						"{{APIStatusURL}}"
+					]
+				}
+			},
+			"response": []
+		},
 		{
 			"name": "Create a new user",
 			"event": [
@@ -15,10 +52,13 @@
 							"pm.test(\"Status code is 201\",  () => {\r",
 							"    pm.response.to.have.status(201);\r",
 							"});\r",
-							"\r",
+							"pm.test(\"Create user successfull\", function () {\r",
+							"    pm.response.to.have.status(\"Created\");\r",
+							"});\r",
 							""
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -37,7 +77,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": " {\"name\":\"TadTestPostman\",\r\n  \"gender\":\"male\", \r\n  \"email\":\"tad@test.com\", \r\n  \"status\":\"active\"}\r\n  ",
+					"raw": " {\r\n  \"name\":\"TestPostman\",\r\n  \"gender\":\"male\", \r\n  \"email\":\"yyyryt@email.com\", \r\n  \"status\":\"active\"\r\n  }\r\n  ",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -54,45 +94,13 @@
 			"response": []
 		},
 		{
-			"name": "API Status",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\",  () => {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"\r",
-							"pm.test(\"Online REST API Status 200 OK\",() => {\r",
-							"  pm.expect(pm.response.text()).to.include(\"Online REST API for Testing and Prototyping\");\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{APIStatusURL}}",
-					"host": [
-						"{{APIStatusURL}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Get all users details",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\",  () => {\r",
+							"pm.test(\"Get users details\",  () => {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
@@ -100,7 +108,8 @@
 							"\r",
 							""
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -133,7 +142,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\",  () => {\r",
+							"pm.test(\"Get user by name\",  () => {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
@@ -141,13 +150,14 @@
 							"  pm.expect(pm.response.text()).to.include(\"name\");\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Find user with name: TadTestPostman\", () => {\r",
+							"pm.test(\"Find user with name: TestPostman\", () => {\r",
 							"  const responseJson = pm.response.json();\r",
-							"  pm.expect(pm.response.text()).to.include(\"TadTestPostman\");\r",
+							"  pm.expect(pm.response.text()).to.include(\"TestPostman\");\r",
 							"  \r",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -155,14 +165,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL}}?name=TadTestPostman",
+					"raw": "{{URL}}?name={{name}}",
 					"host": [
 						"{{URL}}"
 					],
 					"query": [
 						{
 							"key": "name",
-							"value": "TadTestPostman"
+							"value": "{{name}}"
 						}
 					]
 				}
@@ -180,17 +190,47 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Find user with id: 1946\", () => {\r",
-							"  const responseJson = pm.response.json();\r",
-							"  pm.expect(pm.response.text()).to.include(\"1946\");\r",
-							"  \r",
-							"})\r",
+							"\r",
 							"\r",
 							"\r",
 							"\r",
 							""
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest(\"https://gorest.co.in//public/v2/users\", function (err, response) {\r",
+							"    if (err) {\r",
+							"        console.log(err);\r",
+							"    } else {\r",
+							"        var jsonData = response.json();\r",
+							"        console.log(\"jsonData: \" + jsonData);\r",
+							"        var targetName = \"Aagam Pothuvaal IV\"; // Add user name\r",
+							"        var targetId;\r",
+							"\r",
+							"var targetUser = jsonData.find(user => user.name === targetName);\r",
+							"if (targetUser) {\r",
+							"    targetId = targetUser.id;\r",
+							"    console.log(\"ID for user \" + targetName + \": \" + targetId);\r",
+							"    pm.environment.set(\"targetId\", targetId);\r",
+							"} else {\r",
+							"    console.log(\"User with name \" + targetName + \" not found.\");\r",
+							"}\r",
+							"        \r",
+							"\r",
+							"      \r",
+							"    }\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -208,12 +248,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL}}/1946",
+					"raw": "{{URL}}/{{targetId}}",
 					"host": [
 						"{{URL}}"
 					],
 					"path": [
-						"1946"
+						"{{targetId}}"
 					]
 				}
 			},
@@ -226,12 +266,13 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200 user data has been update\",  () => {\r",
+							"pm.test(\"Update user details\",  () => {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							""
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -250,7 +291,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n            \r\n            \"name\": \"Tad after udpate\",\r\n            \"email\": \"tad@TadTest.com\",\r\n            \"gender\": \"male\",\r\n            \"status\": \"active\"\r\n        }\r\n    ",
+					"raw": "{\r\n            \r\n            \"name\": \"SomeNewUserName\",\r\n            \"email\": \"newEmail@gmail.com\",\r\n            \"gender\": \"male\",\r\n            \"status\": \"active\"\r\n        }\r\n    ",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -258,12 +299,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{URL}}/1946",
+					"raw": "{{URL}}/{{targetId}}",
 					"host": [
 						"{{URL}}"
 					],
 					"path": [
-						"1946"
+						"{{targetId}}"
 					]
 				}
 			},
@@ -276,12 +317,10 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 204\",  () => {\r",
-							"    pm.response.to.have.status(204);\r",
-							"});\r",
 							""
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				},
 				{
@@ -289,13 +328,14 @@
 					"script": {
 						"exec": [
 							"\r",
-							"pm.test(\"Status code is 204\",  () => {\r",
+							"pm.test(\"Delete user\",  () => {\r",
 							"    pm.response.to.have.status(204);\r",
 							"});\r",
 							"\r",
 							""
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -313,12 +353,12 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{URL}}/1946",
+					"raw": "{{URL}}/{{targetId}}",
 					"host": [
 						"{{URL}}"
 					],
 					"path": [
-						"1946"
+						"{{targetId}}"
 					]
 				}
 			},
@@ -338,7 +378,18 @@
 							"\r",
 							""
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -346,12 +397,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL}}/1946",
+					"raw": "{{URL}}/{{targetId}}",
 					"host": [
 						"{{URL}}"
 					],
 					"path": [
-						"1946"
+						"{{targetId}}"
 					]
 				}
 			},
@@ -384,7 +435,7 @@
 	"variable": [
 		{
 			"key": "URL",
-			"value": "https://gorest.co.in/public/v1/users"
+			"value": "https://gorest.co.in/public/v2/users"
 		},
 		{
 			"key": "APIStatusURL",
